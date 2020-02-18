@@ -48,7 +48,7 @@ OUTPUT_PATH=hdfs:///user/hadoop-user/wc-out-$RANDOM
 
 # it's important to run this with higher parallelism, otherwise we might risk that
 # JM and TM are on the same YARN node and that we therefore don't test the keytab shipping
-if docker exec -it master bash -c "export HADOOP_CLASSPATH=\`hadoop classpath\` && \
+if docker exec master bash -c "export HADOOP_CLASSPATH=\`hadoop classpath\` && \
    /home/hadoop-user/$FLINK_DIRNAME/bin/flink run -m yarn-cluster -ys 1 -ytm 1000 -yjm 1000 -p 3 \
    -yD taskmanager.memory.jvm-metaspace.size=128m \
    /home/hadoop-user/$FLINK_DIRNAME/examples/streaming/WordCount.jar $INPUT_ARGS --output $OUTPUT_PATH";
@@ -70,9 +70,9 @@ for expected_result in ${EXPECTED_RESULT_LOG_CONTAINS[@]}; do
 done
 
 echo "Running Job without configured keytab, the exception you see below is expected"
-docker exec -it master bash -c "echo \"\" > /home/hadoop-user/$FLINK_DIRNAME/conf/flink-conf.yaml"
+docker exec master bash -c "echo \"\" > /home/hadoop-user/$FLINK_DIRNAME/conf/flink-conf.yaml"
 # verify that it doesn't work if we don't configure a keytab
-OUTPUT=$(docker exec -it master bash -c "export HADOOP_CLASSPATH=\`hadoop classpath\` && \
+OUTPUT=$(docker exec master bash -c "export HADOOP_CLASSPATH=\`hadoop classpath\` && \
     /home/hadoop-user/$FLINK_DIRNAME/bin/flink run \
     -m yarn-cluster -ys 1 -ytm 1000 -yjm 1000 -p 3 \
     -yD taskmanager.memory.jvm-metaspace.size=128m \
