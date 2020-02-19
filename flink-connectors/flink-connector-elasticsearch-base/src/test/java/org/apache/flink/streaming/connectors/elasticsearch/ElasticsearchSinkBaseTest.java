@@ -25,6 +25,7 @@ import org.apache.flink.streaming.connectors.elasticsearch.util.NoOpFailureHandl
 import org.apache.flink.streaming.runtime.streamrecord.StreamRecord;
 import org.apache.flink.streaming.util.OneInputStreamOperatorTestHarness;
 
+import org.elasticsearch.action.ActionRequest;
 import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.bulk.BulkItemResponse;
@@ -425,7 +426,7 @@ public class ElasticsearchSinkBaseTest {
 		public DummyElasticsearchSink(
 				Map<String, String> userConfig,
 				ElasticsearchSinkFunction<T> sinkFunction,
-				DocWriteRequestFailureHandler failureHandler) {
+				ActionRequestFailureHandler failureHandler) {
 			super(new DummyElasticsearchApiCallBridge(), userConfig, sinkFunction, failureHandler);
 		}
 
@@ -585,12 +586,12 @@ public class ElasticsearchSinkBaseTest {
 		}
 	}
 
-	private static class DummyRetryFailureHandler implements DocWriteRequestFailureHandler {
+	private static class DummyRetryFailureHandler implements ActionRequestFailureHandler {
 
 		private static final long serialVersionUID = 5400023700099200745L;
 
 		@Override
-		public void onFailure(DocWriteRequest action, Throwable failure, int restStatusCode, RequestIndexer indexer) throws Throwable {
+		public void onFailure(ActionRequest action, Throwable failure, int restStatusCode, RequestIndexer indexer) throws Throwable {
 			indexer.add(action);
 		}
 	}

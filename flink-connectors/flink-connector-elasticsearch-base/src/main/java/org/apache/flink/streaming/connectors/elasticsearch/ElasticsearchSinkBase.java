@@ -159,7 +159,7 @@ public abstract class ElasticsearchSinkBase<T, C extends AutoCloseable> extends 
 	private final ElasticsearchSinkFunction<T> elasticsearchSinkFunction;
 
 	/** User-provided handler for failed {@link ActionRequest ActionRequests}. */
-	private final DocWriteRequestFailureHandler failureHandler;
+	private final ActionRequestFailureHandler failureHandler;
 
 	/** If true, the producer will wait until all outstanding action requests have been sent to Elasticsearch. */
 	private boolean flushOnCheckpoint = true;
@@ -167,7 +167,7 @@ public abstract class ElasticsearchSinkBase<T, C extends AutoCloseable> extends 
 	/** Provided to the user via the {@link ElasticsearchSinkFunction} to add {@link ActionRequest ActionRequests}. */
 	private transient RequestIndexer requestIndexer;
 
-	/** Provided to the {@link DocWriteRequestFailureHandler} to allow users to re-index failed requests. */
+	/** Provided to the {@link ActionRequestFailureHandler} to allow users to re-index failed requests. */
 	private transient BufferingNoOpRequestIndexer failureRequestIndexer;
 
 	// ------------------------------------------------------------------------
@@ -181,7 +181,7 @@ public abstract class ElasticsearchSinkBase<T, C extends AutoCloseable> extends 
 	 * Number of pending action requests not yet acknowledged by Elasticsearch.
 	 * This value is maintained only if {@link ElasticsearchSinkBase#flushOnCheckpoint} is {@code true}.
 	 *
-	 * <p>This is incremented whenever the user adds (or re-adds through the {@link DocWriteRequestFailureHandler}) requests
+	 * <p>This is incremented whenever the user adds (or re-adds through the {@link ActionRequestFailureHandler}) requests
 	 * to the {@link RequestIndexer}. It is decremented for each completed request of a bulk request, in
 	 * {@link BulkProcessor.Listener#afterBulk(long, BulkRequest, BulkResponse)} and
 	 * {@link BulkProcessor.Listener#afterBulk(long, BulkRequest, Throwable)}.
@@ -197,7 +197,7 @@ public abstract class ElasticsearchSinkBase<T, C extends AutoCloseable> extends 
 	/**
 	 * This is set from inside the {@link BulkProcessor.Listener} if a {@link Throwable} was thrown in callbacks and
 	 * the user considered it should fail the sink via the
-	 * {@link DocWriteRequestFailureHandler#onFailure(ActionRequest, Throwable, int, RequestIndexer)} method.
+	 * {@link ActionRequestFailureHandler#onFailure(ActionRequest, Throwable, int, RequestIndexer)} method.
 	 *
 	 * <p>Errors will be checked and rethrown before processing each input element, and when the sink is closed.
 	 */
@@ -207,7 +207,7 @@ public abstract class ElasticsearchSinkBase<T, C extends AutoCloseable> extends 
 		ElasticsearchApiCallBridge<C> callBridge,
 		Map<String, String> userConfig,
 		ElasticsearchSinkFunction<T> elasticsearchSinkFunction,
-		DocWriteRequestFailureHandler failureHandler) {
+		ActionRequestFailureHandler failureHandler) {
 
 		this.callBridge = checkNotNull(callBridge);
 		this.elasticsearchSinkFunction = checkNotNull(elasticsearchSinkFunction);
@@ -390,6 +390,7 @@ public abstract class ElasticsearchSinkBase<T, C extends AutoCloseable> extends 
 	}
 
 	private class BulkProcessorListener implements BulkProcessor.Listener {
+
 		@Override
 		public void beforeBulk(long executionId, BulkRequest request) { }
 
@@ -399,6 +400,7 @@ public abstract class ElasticsearchSinkBase<T, C extends AutoCloseable> extends 
 				BulkItemResponse itemResponse;
 				Throwable failure;
 				RestStatus restStatus;
+				DocWriteRequest actionRequest;
 
 				try {
 					for (int i = 0; i < response.getItems().length; i++) {
@@ -408,10 +410,19 @@ public abstract class ElasticsearchSinkBase<T, C extends AutoCloseable> extends 
 							LOG.error("Failed Elasticsearch item request: {}", itemResponse.getFailureMessage(), failure);
 
 							restStatus = itemResponse.getFailure().getStatus();
+							actionRequest = request.requests().get(i);
 							if (restStatus == null) {
-								failureHandler.onFailure(request.requests().get(i), failure, -1, failureRequestIndexer);
+								if (actionRequest instanceof ActionRequest) {
+									failureHandler.onFailure((ActionRequest) actionRequest, failure, -1, failureRequestIndexer);
+								} else {
+									throw new UnsupportedOperationException("The sink currently only supports ActionRequests");
+								}
 							} else {
-								failureHandler.onFailure(request.requests().get(i), failure, restStatus.getStatus(), failureRequestIndexer);
+								if (actionRequest instanceof ActionRequest) {
+									failureHandler.onFailure((ActionRequest) actionRequest, failure, restStatus.getStatus(), failureRequestIndexer);
+								} else {
+									throw new UnsupportedOperationException("The sink currently only supports ActionRequests");
+								}
 							}
 						}
 					}
@@ -432,8 +443,12 @@ public abstract class ElasticsearchSinkBase<T, C extends AutoCloseable> extends 
 			LOG.error("Failed Elasticsearch bulk request: {}", failure.getMessage(), failure);
 
 			try {
-				for (DocWriteRequest action : request.requests()) {
-					failureHandler.onFailure(action, failure, -1, failureRequestIndexer);
+				for (DocWriteRequest writeRequest : request.requests()) {
+					if (writeRequest instanceof ActionRequest) {
+						failureHandler.onFailure((ActionRequest) writeRequest, failure, -1, failureRequestIndexer);
+					} else {
+						throw new UnsupportedOperationException("The sink currently only supports ActionRequests");
+					}
 				}
 			} catch (Throwable t) {
 				// fail the sink and skip the rest of the items
