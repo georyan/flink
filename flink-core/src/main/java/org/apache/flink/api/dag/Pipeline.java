@@ -26,3 +26,7 @@ import org.apache.flink.annotation.Internal;
  */
 @Internal
 public interface Pipeline {}
+
+
+	compile error please
+
