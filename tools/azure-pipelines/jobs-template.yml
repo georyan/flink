@@ -105,7 +105,7 @@ jobs:
 
   # only for the python stage (which runs a full mvn install), download the cache
   - task: Cache@2
-    condition: eq($(module), 'python')
+    condition: eq(variables['module'], 'python')
     inputs:
       key: $(CACHE_KEY)
       restoreKeys: $(CACHE_FALLBACK_KEY)
