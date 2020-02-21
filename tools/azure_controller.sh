@@ -173,6 +173,13 @@ elif [ $STAGE != "$STAGE_CLEANUP" ]; then
         PY_MVN="$PY_MVN -Drat.skip=true"
         ${PY_MVN}
         echo "Done compiling ... "
+
+        if [ $EXIT_CODE != 0 ]; then
+            echo "=============================================================================="
+            echo "Compile error for python stage preparation. Exit code: $EXIT_CODE. Failing build"
+            echo "=============================================================================="
+            exit $EXIT_CODE
+        fi
     fi
 
 
