@@ -74,3 +74,5 @@ stages:
         - script: |
             set -x
             ls -lisah $(Pipeline.Workspace)/gem_cache
+            find $(Pipeline.Workspace)/gem_cache
+            du -sh $(Pipeline.Workspace)/gem_cache
