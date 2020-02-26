@@ -58,6 +58,7 @@ stages:
             set -x
             env
             ls -lisah $(Pipeline.Workspace)/gem_cache
+            echo "Happy"
         - task: Cache@2
           inputs:
             key: gem_cache | docs/Gemfile*
