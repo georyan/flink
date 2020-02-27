@@ -47,4 +47,8 @@ jobs:
           sudo apt-get autoremove -y
           sudo apt-get clean
           df -h
+          du -h /usr/share/dotnet/
+          rm -rf /usr/share/dotnet/
+          df -h
+          dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 1000
   
