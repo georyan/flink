@@ -52,10 +52,11 @@ jobs:
     continueOnError: true # continue the build even if the cache fails.
     displayName: Cache Maven local repo
   - script: |
-      echo "##vso[task.setvariable variable=JAVA_HOME]$(JAVA_HOME_11_X64)"
-      echo "##vso[task.setvariable variable=PATH]$(JAVA_HOME_11_X64)/bin;$(PATH)"
+      echo "##vso[task.setvariable variable=JAVA_HOME]$JAVA_HOME_11_X64"
+      echo "##vso[task.setvariable variable=PATH]$JAVA_HOME_11_X64/bin;$PATH"
     displayName: "Set to jdk11"
     condition: eq('${{parameters.jdk}}', 'jdk11')
+  - script: env
   # Compile
   - script: STAGE=compile ${{parameters.environment}} ./tools/azure_controller.sh compile
     displayName: Build
@@ -115,8 +116,8 @@ jobs:
     continueOnError: true # continue the build even if the cache fails.
     displayName: Cache Maven local repo
   - script: |
-      echo "##vso[task.setvariable variable=JAVA_HOME]$(JAVA_HOME_11_X64)"
-      echo "##vso[task.setvariable variable=PATH]$(JAVA_HOME_11_X64)/bin;$(PATH)"
+      echo "##vso[task.setvariable variable=JAVA_HOME]$JAVA_HOME_11_X64"
+      echo "##vso[task.setvariable variable=PATH]$JAVA_HOME_11_X64/bin;$PATH"
     displayName: "Set to jdk11"
     condition: eq('${{parameters.jdk}}', 'jdk11')  
   # Test
@@ -146,8 +147,8 @@ jobs:
       displayName: Cache Maven local repo
       continueOnError: true
     - script: |
-        echo "##vso[task.setvariable variable=JAVA_HOME]$(JAVA_HOME_11_X64)"
-        echo "##vso[task.setvariable variable=PATH]$(JAVA_HOME_11_X64)/bin;$(PATH)"
+        echo "##vso[task.setvariable variable=JAVA_HOME]$JAVA_HOME_11_X64"
+        echo "##vso[task.setvariable variable=PATH]$JAVA_HOME_11_X64/bin;$PATH"
       displayName: "Set to jdk11"
       condition: eq('${{parameters.jdk}}', 'jdk11')
     - script: ./tools/travis/setup_maven.sh
