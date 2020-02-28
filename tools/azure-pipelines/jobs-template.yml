@@ -126,6 +126,12 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'
+  # upload debug artifacts
+  - task: PublishPipelineArtifact@1
+    inputs:
+      path: $(ARTIFACTS_FILE)
+      artifact: debug-logs-${{parameters.stage_name}}
+      condition: not(eq('$(ARTIFACTS_FILE)', ''))
 
 
 - job: e2e_${{parameters.stage_name}}
