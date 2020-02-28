@@ -152,7 +152,6 @@ upload_artifacts_s3() {
 	if [ ! -z "$TF_BUILD" ] ; then
 		echo "##vso[task.setvariable variable=ARTIFACTS_FILE]$ARTIFACTS_FILE"
 	fi
-fi
 }
 
 print_stacktraces () {
