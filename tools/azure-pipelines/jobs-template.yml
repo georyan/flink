@@ -129,9 +129,9 @@ jobs:
   # upload debug artifacts
   - task: PublishPipelineArtifact@1
     inputs:
-      path: $(ARTIFACTS_FILE)
+      path: $(ARTIFACT_DIR)
       artifact: debug-logs-${{parameters.stage_name}}
-      condition: not(eq('$(ARTIFACTS_FILE)', ''))
+      condition: not(eq('$(ARTIFACT_DIR)', ''))
 
 
 - job: e2e_${{parameters.stage_name}}
