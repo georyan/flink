@@ -21,6 +21,8 @@
 bin=`dirname "$0"`
 bin=`cd "$bin"; pwd`
 
+set -x
+
 . "$bin"/config.sh
 
 if [ "$FLINK_IDENT_STRING" = "" ]; then

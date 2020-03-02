@@ -178,6 +178,7 @@ elif [ $STAGE != "$STAGE_CLEANUP" ]; then
         env
         echo "mvn version:"
         mvn -version
+        java -version
         # run mvn install (w/o "clean"):
         PY_MVN="${MVN// clean/}"
         PY_MVN="$PY_MVN -Drat.skip=true"
