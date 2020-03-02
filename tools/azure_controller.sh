@@ -136,6 +136,8 @@ if [ $STAGE == "$STAGE_COMPILE" ]; then
 
             # AZ Pipelines has a problem with links.
             rm "$CACHE_FLINK_DIR/build-target"
+
+            env > $CACHE_FLINK_DIR/azp_env
         }
     
         echo "Minimizing cache"
@@ -168,6 +170,14 @@ elif [ $STAGE != "$STAGE_CLEANUP" ]; then
         echo "=============================================================================="
         echo "Python stage found. Re-compiling (this is required on Azure for the python tests to pass)"
         echo "=============================================================================="
+
+        echo "DEBUGGING FAILED PYTHON STAGE ON JDK11"
+        echo "remote env:"
+        cat $CACHE_FLINK_DIR/azp_env
+        echo "local env:"
+        env
+        echo "mvn version:"
+        mvn -version
         # run mvn install (w/o "clean"):
         PY_MVN="${MVN// clean/}"
         PY_MVN="$PY_MVN -Drat.skip=true"
