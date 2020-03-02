@@ -43,6 +43,9 @@ echo "Java and Maven version"
 java -version
 mvn -version
 
+echo "Build profile: $PROFILE"
+env
+
 echo "Free disk space"
 df -h
 
