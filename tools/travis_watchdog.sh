@@ -148,9 +148,9 @@ set -x
 	# On Azure, publish artifact as a build artifact
 	if [ ! -z "$TF_BUILD" ] ; then
 		mkdir /tmp/artifact-dir
-		cp $ARTIFACTS_FILE /tmp/artifact-dir/
-		ls -lisah /tmp/artifact-dir/
-		echo "##vso[task.setvariable variable=ARTIFACT_DIR]/tmp/artifact-dir"
+		cp $ARTIFACTS_FILE $SYSTEM_WORKFOLDER/artifact-dir/
+		ls -lisah $SYSTEM_WORKFOLDER/artifact-dir/
+		echo "##vso[task.setvariable variable=ARTIFACT_DIR]$SYSTEM_WORKFOLDER/artifact-dir"
 	fi
 
 	# upload to https://transfer.sh
