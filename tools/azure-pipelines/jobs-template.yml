@@ -131,7 +131,7 @@ jobs:
     inputs:
       path: $(ARTIFACT_DIR)
       artifact: logs-${{parameters.stage_name}}-$(module)
-      condition: not(eq('$(ARTIFACT_DIR)', ''))
+      condition: and(succeededOrFailed(), not(eq('$(ARTIFACT_DIR)', '')))
 
 
 - job: e2e_${{parameters.stage_name}}
@@ -171,8 +171,9 @@ jobs:
       displayName: Run e2e tests
       # upload debug artifacts
     - task: PublishPipelineArtifact@1
+      condition: always()
       inputs:
         path: $(ARTIFACT_DIR)
         artifact: logs-${{parameters.stage_name}}-e2e
-        condition: not(eq('$(ARTIFACT_DIR)', ''))
+        condition: and(succeededOrFailed(), not(eq('$(ARTIFACT_DIR)', '')))
 
