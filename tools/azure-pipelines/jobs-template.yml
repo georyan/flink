@@ -130,7 +130,7 @@ jobs:
   - task: PublishPipelineArtifact@1
     inputs:
       path: $(ARTIFACT_DIR)
-      artifact: logs-${{parameters.stage_name}}-$(module)
+      artifact: logs-${{parameters.stage_name}}-$(ARTIFACT_NAME)
       condition: and(succeededOrFailed(), not(eq('$(ARTIFACT_DIR)', '')))
 
 

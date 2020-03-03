@@ -146,9 +146,15 @@ upload_artifacts_s3() {
 
 	# On Azure, publish ARTIFACTS_FILE as a build artifact
 	if [ ! -z "$TF_BUILD" ] ; then
-		mkdir artifact-dir
-		cp $ARTIFACTS_FILE artifact-dir/
-		echo "##vso[task.setvariable variable=ARTIFACT_DIR]$(pwd)/artifact-dir"
+		echo "DEBBUGGING"
+		env
+		set -x
+		ARTIFACT_DIR="$(pwd)/artifact-dir"
+		mkdir ARTIFACT_DIR
+		cp $ARTIFACTS_FILE $ARTIFACT_DIR/
+		
+		echo "##vso[task.setvariable variable=ARTIFACT_DIR]$ARTIFACT_DIR"
+		echo "##vso[task.setvariable variable=ARTIFACT_NAME]$(echo $MODULE | tr -dc '[:alnum:]\n\r')"
 	fi
 
 	# upload to https://transfer.sh
