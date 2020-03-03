@@ -147,10 +147,10 @@ upload_artifacts_s3() {
 set -x
 	# On Azure, publish artifact as a build artifact
 	if [ ! -z "$TF_BUILD" ] ; then
-		sudo mkdir -p $SYSTEM_WORKFOLDER/artifact-dir
-		sudo cp $ARTIFACTS_FILE $SYSTEM_WORKFOLDER/artifact-dir/
-		sudo ls -lisah $SYSTEM_WORKFOLDER/artifact-dir/
-		echo "##vso[task.setvariable variable=ARTIFACT_DIR]$SYSTEM_WORKFOLDER/artifact-dir"
+		mkdir artifact-dir
+		cp $ARTIFACTS_FILE artifact-dir/
+		ls -lisah artifact-dir/
+		echo "##vso[task.setvariable variable=ARTIFACT_DIR]$(pwd)/artifact-dir"
 	fi
 
 	# upload to https://transfer.sh
