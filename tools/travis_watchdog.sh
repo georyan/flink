@@ -147,7 +147,7 @@ upload_artifacts_s3() {
 set -x
 	# On Azure, publish artifact as a build artifact
 	if [ ! -z "$TF_BUILD" ] ; then
-		mkdir /tmp/artifact-dir
+		mkdir -p $SYSTEM_WORKFOLDER/artifact-dir
 		cp $ARTIFACTS_FILE $SYSTEM_WORKFOLDER/artifact-dir/
 		ls -lisah $SYSTEM_WORKFOLDER/artifact-dir/
 		echo "##vso[task.setvariable variable=ARTIFACT_DIR]$SYSTEM_WORKFOLDER/artifact-dir"
