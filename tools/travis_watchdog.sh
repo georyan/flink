@@ -144,12 +144,10 @@ upload_artifacts_s3() {
 		artifacts upload --bucket $UPLOAD_BUCKET --key $UPLOAD_ACCESS_KEY --secret $UPLOAD_SECRET_KEY --target-paths $UPLOAD_TARGET_PATH $ARTIFACTS_FILE
 	fi
 
-set -x
-	# On Azure, publish artifact as a build artifact
+	# On Azure, publish ARTIFACTS_FILE as a build artifact
 	if [ ! -z "$TF_BUILD" ] ; then
 		mkdir artifact-dir
 		cp $ARTIFACTS_FILE artifact-dir/
-		ls -lisah artifact-dir/
 		echo "##vso[task.setvariable variable=ARTIFACT_DIR]$(pwd)/artifact-dir"
 	fi
 
