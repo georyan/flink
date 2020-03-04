@@ -150,7 +150,7 @@ upload_artifacts_s3() {
 		env
 		set -x
 		ARTIFACT_DIR="$(pwd)/artifact-dir"
-		mkdir ARTIFACT_DIR
+		mkdir $ARTIFACT_DIR
 		cp $ARTIFACTS_FILE $ARTIFACT_DIR/
 		
 		echo "##vso[task.setvariable variable=ARTIFACT_DIR]$ARTIFACT_DIR"
