@@ -122,6 +122,9 @@ if [[ ${PROFILE} != *"jdk11"* ]]; then
 	fi
 
 	run_test "Test PubSub connector with Docker based Google PubSub Emulator" "$END_TO_END_DIR/test-scripts/test_streaming_gcp_pubsub.sh"
+
+	# Make this a jdk8 test until FLINK-16417 is resolved
+	run_test "ConnectedComponents iterations with high parallelism end-to-end test" "$END_TO_END_DIR/test-scripts/test_high_parallelism_iterations.sh 25"
 fi
 
 ################################################################################
@@ -185,8 +188,6 @@ run_test "TPC-H end-to-end test (Blink planner)" "$END_TO_END_DIR/test-scripts/t
 run_test "TPC-DS end-to-end test (Blink planner)" "$END_TO_END_DIR/test-scripts/test_tpcds.sh"
 
 run_test "Heavy deployment end-to-end test" "$END_TO_END_DIR/test-scripts/test_heavy_deployment.sh" "skip_check_exceptions"
-
-run_test "ConnectedComponents iterations with high parallelism end-to-end test" "$END_TO_END_DIR/test-scripts/test_high_parallelism_iterations.sh 25"
 
 run_test "Dependency shading of table modules test" "$END_TO_END_DIR/test-scripts/test_table_shaded_dependencies.sh"
 
