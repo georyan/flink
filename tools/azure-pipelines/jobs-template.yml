@@ -129,6 +129,7 @@ jobs:
   # upload debug artifacts
   - task: PublishPipelineArtifact@1
     condition: and(succeededOrFailed(), not(eq('$(ARTIFACT_DIR)', '')))
+    displayName: Upload Logs
     inputs:
       path: $(ARTIFACT_DIR)
       artifact: logs-${{parameters.stage_name}}-$(ARTIFACT_NAME)
@@ -170,9 +171,10 @@ jobs:
       displayName: Run e2e tests
       # upload debug artifacts
     - task: PublishPipelineArtifact@1
-      condition: always()
+      condition: and(succeededOrFailed(), not(eq('$(ARTIFACT_DIR)', '')))
+      displayName: Upload Logs
       inputs:
         path: $(ARTIFACT_DIR)
         artifact: logs-${{parameters.stage_name}}-e2e
-        condition: and(succeededOrFailed(), not(eq('$(ARTIFACT_DIR)', '')))
+        
 
