@@ -128,11 +128,10 @@ jobs:
       testResultsFormat: 'JUnit'
   # upload debug artifacts
   - task: PublishPipelineArtifact@1
+    condition: and(succeededOrFailed(), not(eq('$(ARTIFACT_DIR)', '')))
     inputs:
       path: $(ARTIFACT_DIR)
       artifact: logs-${{parameters.stage_name}}-$(ARTIFACT_NAME)
-      condition: and(succeededOrFailed(), not(eq('$(ARTIFACT_DIR)', '')))
-
 
 - job: e2e_${{parameters.stage_name}}
   # uncomment below condition to run the e2e tests only on request.
