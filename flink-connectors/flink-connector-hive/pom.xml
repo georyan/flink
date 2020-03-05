@@ -40,6 +40,14 @@ under the License.
 		<reflections.version>0.9.8</reflections.version>
 	</properties>
 
+	<repositories>
+		<repository>
+			<!-- Needed for org.pentaho:pentaho-aggdesigner-algorithm:pom:5.1.5-jhyde -->
+			<id>spring-lib-release</id>
+			<url>https://repo.spring.io/libs-release/</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 
 		<!-- core dependencies -->
@@ -705,6 +713,10 @@ under the License.
 				<exclusion>
 					<groupId>jdk.tools</groupId>
 					<artifactId>jdk.tools</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jms</artifactId>
+					<groupId>javax.jms</groupId>
 				</exclusion>
 				<exclusion>
 					<groupId>log4j</groupId>
