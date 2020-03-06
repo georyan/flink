@@ -28,6 +28,10 @@ JOB_ID="00000000000000000000000000000000"
 function ha_cleanup() {
   stop_watchdogs
   kill_all 'StandaloneJobClusterEntryPoint'
+  rm ${FLINK_DIR}/$TEST_PROGRAM_JAR_NAME
+
+  echo "DEBUGGING: files in FLINK_DIR: $FLINK_DIR"
+  find $FLINK_DIR
 }
 
 on_exit ha_cleanup

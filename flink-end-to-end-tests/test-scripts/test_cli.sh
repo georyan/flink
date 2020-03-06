@@ -21,6 +21,12 @@ set -Eeuo pipefail
 
 source "$(dirname "$0")"/common.sh
 
+
+echo "DEBUGGING. files when started"
+
+find $FLINK_DIR
+
+
 TEST_PROGRAM_JAR=$END_TO_END_DIR/flink-cli-test/target/PeriodicStreamingJob.jar
 
 start_cluster
