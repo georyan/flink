@@ -33,8 +33,8 @@ UPLOAD_ACCESS_KEY=$ARTIFACTS_AWS_ACCESS_KEY
 UPLOAD_SECRET_KEY=$ARTIFACTS_AWS_SECRET_KEY
 
 
-HERE="`dirname \"$0\"`"
-export FLINK_ROOT="`( cd \"${HERE}/..\" && pwd -P)`"
+SCRIPT_DIR="`dirname \"$0\"`"
+export FLINK_ROOT="`( cd \"${SCRIPT_DIR}/..\" && pwd -P)`"
 if [ -z "${FLINK_ROOT}" ] ; then
 	# error; for some reason, the path is not accessible
 	# to the script (e.g. permissions re-evaled after suid)
@@ -42,7 +42,7 @@ if [ -z "${FLINK_ROOT}" ] ; then
 fi
 
 prepare_artifacts() {
-	export ARTIFACTS_DIR="${HERE}/artifacts"
+	export ARTIFACTS_DIR="${SCRIPT_DIR}/artifacts"
 
 	mkdir -p $ARTIFACTS_DIR || { echo "FAILURE: cannot create log directory '${ARTIFACTS_DIR}'." ; exit 1; }
 }
@@ -106,6 +106,8 @@ collect_coredumps() {
 		echo "Copying $file to artifacts"
 		cp $file $ARTIFACTS_DIR/
 	done
+
+	find $FLINK_ROOT
 }
 
 # locate YARN logs and put them into artifacts directory
