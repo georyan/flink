@@ -34,8 +34,8 @@ UPLOAD_SECRET_KEY=$ARTIFACTS_AWS_SECRET_KEY
 
 
 HERE="`dirname \"$0\"`"
-FLINK_ROOT="`( cd \"${HERE}../../\" && pwd -P)`"
-if [ -z "${HERE}" ] ; then
+export FLINK_ROOT="`( cd \"${HERE}/..\" && pwd -P)`"
+if [ -z "${FLINK_ROOT}" ] ; then
 	# error; for some reason, the path is not accessible
 	# to the script (e.g. permissions re-evaled after suid)
 	exit 1  # fail
@@ -101,7 +101,7 @@ upload_artifacts() {
 ################ Utilities for handling logs ##################
 
 collect_coredumps() {
-	echo "Searching for .dump, .dumpstream and related files in $($FLINK_ROOT)"
+	echo "Searching for .dump, .dumpstream and related files in $FLINK_ROOT"
 	for file in `find $FLINK_ROOT -type f -regextype posix-extended -iregex '.*\.dump|.*\.dumpstream|.*hs.*\.log|.*/core(.[0-9]+)?$'`; do
 		echo "Copying $file to artifacts"
 		cp $file $ARTIFACTS_DIR/
