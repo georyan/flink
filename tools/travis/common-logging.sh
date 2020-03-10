@@ -32,6 +32,15 @@ UPLOAD_BUCKET=$ARTIFACTS_AWS_BUCKET
 UPLOAD_ACCESS_KEY=$ARTIFACTS_AWS_ACCESS_KEY
 UPLOAD_SECRET_KEY=$ARTIFACTS_AWS_SECRET_KEY
 
+
+HERE="`dirname \"$0\"`"
+FLINK_ROOT="`( cd \"${HERE}../../\" && pwd -P)`"
+if [ -z "${HERE}" ] ; then
+	# error; for some reason, the path is not accessible
+	# to the script (e.g. permissions re-evaled after suid)
+	exit 1  # fail
+fi
+
 prepare_artifacts() {
 	export ARTIFACTS_DIR="${HERE}/artifacts"
 
@@ -75,7 +84,7 @@ upload_artifacts() {
 
 	# On Azure, publish ARTIFACTS_FILE as a build artifact
 	if [ ! -z "$TF_BUILD" ] ; then
-		ARTIFACT_DIR="$(pwd)/artifact-dir"
+		ARTIFACT_DIR="$FLINK_ROOT/artifact-dir"
 		mkdir $ARTIFACT_DIR
 		cp $ARTIFACTS_FILE $ARTIFACT_DIR/
 		
@@ -92,8 +101,8 @@ upload_artifacts() {
 ################ Utilities for handling logs ##################
 
 collect_coredumps() {
-	echo "Searching for .dump, .dumpstream and related files in $($HERE/../)"
-	for file in `find . -type f -regextype posix-extended -iregex '.*\.dump|.*\.dumpstream|.*hs.*\.log|.*/core(.[0-9]+)?$'`; do
+	echo "Searching for .dump, .dumpstream and related files in $($FLINK_ROOT)"
+	for file in `find $FLINK_ROOT -type f -regextype posix-extended -iregex '.*\.dump|.*\.dumpstream|.*hs.*\.log|.*/core(.[0-9]+)?$'`; do
 		echo "Copying $file to artifacts"
 		cp $file $ARTIFACTS_DIR/
 	done
@@ -102,11 +111,12 @@ collect_coredumps() {
 # locate YARN logs and put them into artifacts directory
 put_yarn_logs_to_artifacts() {
 	# Make sure to be in project root
-	cd $HERE/../
-	for file in `find ./flink-yarn-tests/target -type f -name '*.log'`; do
+	echo "Searching for YARN container logs in '$FLINK_ROOT/flink-yarn-tests/target'"
+	for file in `find $FLINK_ROOT/flink-yarn-tests/target -type f -name '*.log'`; do
 		TARGET_FILE=`echo "$file" | grep -Eo "container_[0-9_]+/(.*).log"`
 		TARGET_DIR=`dirname	 "$TARGET_FILE"`
 		mkdir -p "$ARTIFACTS_DIR/yarn-tests/$TARGET_DIR"
 		cp $file "$ARTIFACTS_DIR/yarn-tests/$TARGET_FILE"
 	done
 }
+

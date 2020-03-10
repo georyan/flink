@@ -17,6 +17,8 @@
 # limitations under the License.
 ################################################################################
 
+set -x
+
 HERE="`dirname \"$0\"`"				# relative
 HERE="`( cd \"$HERE\" && pwd )`" 	# absolutized and normalized
 if [ -z "$HERE" ] ; then
@@ -26,6 +28,7 @@ if [ -z "$HERE" ] ; then
 fi
 
 source "${HERE}/travis/stage.sh"
+source "${HERE}/travis/common-logging.sh"
 
 # exports $ARTIFACTS_DIR
 prepare_artifacts
