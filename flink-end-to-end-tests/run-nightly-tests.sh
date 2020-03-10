@@ -53,7 +53,8 @@ echo "Running with profile '$PROFILE'"
 
 # On Azure, set up tooling to collect coredumps (and logs of e2e tests)
 if [ ! -z "$TF_BUILD" ] ; then
-	prepare_artifacts # exports ARTIFACTS_DIR and ARTIFACTS_FILE
+	prepare_artifacts # exports ARTIFACTS_DIR
+	ulimit -c unlimited # enable coredumps
 	function collect_and_publish_logs {
 		collect_coredumps
 		upload_artifacts

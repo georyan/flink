@@ -34,6 +34,7 @@ UPLOAD_SECRET_KEY=$ARTIFACTS_AWS_SECRET_KEY
 
 
 SCRIPT_DIR="`dirname \"$0\"`"
+SCRIPT_DIR="`( cd \"${SCRIPT_DIR}\" && pwd -P)`"
 export FLINK_ROOT="`( cd \"${SCRIPT_DIR}/..\" && pwd -P)`"
 if [ -z "${FLINK_ROOT}" ] ; then
 	# error; for some reason, the path is not accessible
