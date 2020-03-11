@@ -27,6 +27,7 @@ function _on_exit_callback {
   # Fast exit, if there is another keyboard interrupt.
   trap "exit -1" INT
 
+  echo "RUNNING EXIT COMMANDS: ${_on_exit_commands[@]-}"
   for command in "${_on_exit_commands[@]-}"; do
     eval "${command}"
   done
