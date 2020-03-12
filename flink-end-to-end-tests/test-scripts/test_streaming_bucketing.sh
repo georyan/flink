@@ -148,17 +148,21 @@ echo "Job $JOB_ID was cancelled, time to verify"
 # get all lines in part files
 find ${TEST_DATA_DIR}/out -type f \( -iname "part-*" \) -exec cat {} + > ${TEST_DATA_DIR}/complete_result
 
+echo "COMPLETE RESULT:"
+cat ${TEST_DATA_DIR}/complete_result
+echo ":COMPLETE RESULT"
+
 # for debugging purposes
-#echo "Checking proper result..."
-#for KEY in {0..9}; do
-#  for IDX in {0..5999}; do
-#    FOUND_LINES=$(grep "($KEY,10,$IDX,Some payload...)" ${TEST_DATA_DIR}/complete_result | wc -l)
-#    if [ ${FOUND_LINES} != 1 ] ; then
-#      echo "Unexpected count $FOUND_LINES for ($KEY,10,$IDX,Some payload...)"
-#      PASS=""
-#      exit 1
-#    fi
-#  done
-#done
+echo "Checking proper result..."
+for KEY in {0..9}; do
+ for IDX in {0..5999}; do
+   FOUND_LINES=$(grep "($KEY,10,$IDX,Some payload...)" ${TEST_DATA_DIR}/complete_result | wc -l)
+   if [ ${FOUND_LINES} != 1 ] ; then
+     echo "Unexpected count $FOUND_LINES for ($KEY,10,$IDX,Some payload...)"
+     PASS=""
+     exit 1
+   fi
+ done
+done
 
 check_result_hash "Bucketing Sink" $TEST_DATA_DIR/complete_result "01aba5ff77a0ef5e5cf6a727c248bdc3"
