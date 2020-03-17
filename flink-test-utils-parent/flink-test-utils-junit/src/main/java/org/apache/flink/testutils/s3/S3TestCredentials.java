@@ -44,7 +44,8 @@ public class S3TestCredentials {
 	 * of this JVM.
 	 */
 	public static boolean credentialsAvailable() {
-		return S3_TEST_BUCKET != null && S3_TEST_ACCESS_KEY != null && S3_TEST_SECRET_KEY != null;
+		return S3_TEST_BUCKET != null && S3_TEST_ACCESS_KEY != null && S3_TEST_SECRET_KEY != null
+			&& !S3_TEST_BUCKET.isEmpty() && !S3_TEST_ACCESS_KEY.isEmpty() && S3_TEST_SECRET_KEY.isEmpty();
 	}
 
 	/**
