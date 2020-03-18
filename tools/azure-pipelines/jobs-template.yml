@@ -37,7 +37,7 @@ jobs:
   steps:
   - bash: env ; exit 1
     env:
-      IT_CASE_S3_BUCKET: ${{variables.S3_BUCKET}}
+      IT_CASE_S3_BUCKET: ${{S3_BUCKET}}
       IT_CASE_S3_ACCESS_KEY: $(S3_ACCESS_KEY)
       IT_CASE_S3_SECRET_KEY: ${{variables['S3_SECRET_KEY']}}
       NOTSET: $(NOTSET)
