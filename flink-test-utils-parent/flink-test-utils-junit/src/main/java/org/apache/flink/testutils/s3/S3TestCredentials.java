@@ -43,7 +43,7 @@ public class S3TestCredentials {
 	 * Checks whether S3 test credentials are available in the environment variables
 	 * of this JVM.
 	 */
-	public static boolean credentialsAvailable() {
+	private static boolean credentialsAvailable() {
 		return isNotEmpty(S3_TEST_BUCKET) && isNotEmpty(S3_TEST_ACCESS_KEY) && isNotEmpty(S3_TEST_SECRET_KEY);
 	}
 
