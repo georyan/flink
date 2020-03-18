@@ -43,6 +43,7 @@ jobs:
       NOTSET: $(NOTSET)
       NOTSET_1: $[variables.NOTSET_1]
       NOTSET_2: ${{ variables.NOTSET_2 }}
+      SET_3: ${{ variables.IT_CASE_S3_BUCKET }}
 
   # The cache task is persisting the .m2 directory between builds, so that
   # we do not have to re-download all dependencies from maven central for 
