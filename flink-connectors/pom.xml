@@ -59,6 +59,15 @@ under the License.
 		<module>flink-sql-connector-elasticsearch7</module>
 	</modules>
 
+
+	<repositories>
+		<repository>
+			<!-- Needed for org.pentaho:pentaho-aggdesigner-algorithm:pom:5.1.5-jhyde -->
+			<id>spring-lib-release</id>
+			<url>https://repo.spring.io/libs-release/</url>
+		</repository>
+	</repositories>
+
 	<!-- override these root dependencies as 'provided', so they don't end up
 		in the jars-with-dependencies (uber jars) of connectors and
 		user programs that depend on the connectors -->
