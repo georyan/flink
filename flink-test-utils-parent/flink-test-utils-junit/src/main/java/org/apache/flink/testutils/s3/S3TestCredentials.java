@@ -44,8 +44,14 @@ public class S3TestCredentials {
 	 * of this JVM.
 	 */
 	public static boolean credentialsAvailable() {
-		return S3_TEST_BUCKET != null && S3_TEST_ACCESS_KEY != null && S3_TEST_SECRET_KEY != null
-			&& !S3_TEST_BUCKET.isEmpty() && !S3_TEST_ACCESS_KEY.isEmpty() && S3_TEST_SECRET_KEY.isEmpty();
+		return isNotEmpty(S3_TEST_BUCKET) && isNotEmpty(S3_TEST_ACCESS_KEY) && isNotEmpty(S3_TEST_SECRET_KEY);
+	}
+
+	/**
+	 * Checks if a String is not null and not empty.
+	 */
+	public static boolean isNotEmpty(@Nullable String str) {
+		return str != null && !str.isEmpty();
 	}
 
 	/**
