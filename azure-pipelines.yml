@@ -48,6 +48,10 @@ variables:
   CACHE_FALLBACK_KEY: maven | $(Agent.OS)
   CACHE_FLINK_DIR: $(Pipeline.Workspace)/flink_cache
 
+variables:
+  mySecret1: $[variables.S3_SECRET_KEY]
+  mySecret2: $[variables.NOTSET]
+  
 
 jobs:
   - template: tools/azure-pipelines/jobs-template.yml
