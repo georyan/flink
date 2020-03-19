@@ -22,6 +22,11 @@ parameters:
   container: # the container name for the build
   jdk: # the jdk version to use
 
+
+variables:
+  mySecret1: $[variables.S3_SECRET_KEY]
+  mySecret2: $[variables.NOTSET]
+
 jobs:
 - job: compile_${{parameters.stage_name}}
   condition: not(eq(variables['MODE'], 'e2e'))
