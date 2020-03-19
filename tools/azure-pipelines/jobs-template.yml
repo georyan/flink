@@ -44,8 +44,10 @@ jobs:
       NOTSET_1: $[variables.NOTSET_1]
       NOTSET_2: ${{ variables.NOTSET_2 }}
       SET_3: ${{ variables.S3_BUCKET }}
-      theirSecret10: $(mySecret10)
-      theirSecret20: $(mySecret20)
+      IT_CASE_S3_BUCKET: $(SECRET_S3_BUCKET)
+      IT_CASE_S3_ACCESS_KEY: $(SECRET_S3_ACCESS_KEY)
+      IT_CASE_S3_SECRET_KEY: $(SECRET_S3_SECRET_KEY)
+      
 
   # The cache task is persisting the .m2 directory between builds, so that
   # we do not have to re-download all dependencies from maven central for 
