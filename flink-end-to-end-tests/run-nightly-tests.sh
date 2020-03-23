@@ -32,6 +32,13 @@ if [ -z "$FLINK_DIR" ] ; then
     exit 1
 fi
 
+# On Azure CI, set artifacts dir
+if [ ! -z "$TF_BUILD" ] ; then
+	export ARTIFACTS_DIR="${END_TO_END_DIR}/artifacts"
+	mkdir -p $ARTIFACTS_DIR || { echo "FAILURE: cannot create log directory '${ARTIFACTS_DIR}'." ; exit 1; }
+fi
+
+
 source "${END_TO_END_DIR}/test-scripts/test-runner-common.sh"
 
 FLINK_DIR="`( cd \"$FLINK_DIR\" && pwd -P)`" # absolutized and normalized
@@ -206,17 +213,8 @@ printf "\n\n====================================================================
 printf "Running Java end-to-end tests\n"
 printf "==============================================================================\n"
 
-HERE="`dirname \"$0\"`"
-HERE="`( cd \"${HERE}\" && pwd -P)`"
-if [ -z "${HERE}" ] ; then
-	# error; for some reason, the path is not accessible
-	# to the script (e.g. permissions re-evaled after suid)
-	exit 1  # fail
-fi
-ARTIFACTS_DIR="${HERE}/artifacts"
-mkdir -p $ARTIFACTS_DIR || { echo "FAILURE: cannot create log directory '${ARTIFACTS_DIR}'." ; exit 1; }
 
-LOG4J_PROPERTIES=${HERE}/../tools/log4j-travis.properties
+LOG4J_PROPERTIES=${END_TO_END_DIR}/../tools/log4j-travis.properties
 
 MVN_LOGGING_OPTIONS="-Dlog.dir=${ARTIFACTS_DIR} -Dlog4j.configurationFile=file://$LOG4J_PROPERTIES -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 MVN_COMMON_OPTIONS="-nsu -B -Dflink.forkCount=2 -Dflink.forkCountTestPackage=2 -Dmaven.wagon.http.pool=false -Dfast -Pskip-webui-build"
