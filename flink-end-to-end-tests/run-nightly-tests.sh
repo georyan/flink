@@ -36,6 +36,17 @@ fi
 if [ ! -z "$TF_BUILD" ] ; then
 	export ARTIFACTS_DIR="${END_TO_END_DIR}/artifacts"
 	mkdir -p $ARTIFACTS_DIR || { echo "FAILURE: cannot create log directory '${ARTIFACTS_DIR}'." ; exit 1; }
+
+	# compress and register logs for publication on exit
+	function compress_logs {
+		echo "COMPRESSING build artifacts."
+		ARTIFACTS_FILE=${BUILD_BUILDNUMBER}.tgz
+		tar -zcvf ${ARTIFACTS_FILE} $ARTIFACTS_DIR
+		mkdir artifact-dir
+		cp ${ARTIFACTS_FILE} artifact-dir/
+		echo "##vso[task.setvariable variable=ARTIFACT_DIR]$(pwd)/artifact-dir"
+	}
+	trap compress_logs EXIT
 fi
 
 
@@ -226,14 +237,5 @@ mvn ${MVN_COMMON_OPTIONS} ${MVN_LOGGING_OPTIONS} ${PROFILE} verify -pl ${e2e_mod
 
 EXIT_CODE=$?
 
-# On Azure, publish ARTIFACTS_FILE as a build artifact
-if [ ! -z "$TF_BUILD" ] ; then
-	echo "COMPRESSING build artifacts."
-	ARTIFACTS_FILE=${BUILD_BUILDNUMBER}.tgz
-	tar -zcvf ${ARTIFACTS_FILE} $ARTIFACTS_DIR
-	mkdir artifact-dir
-	cp ${ARTIFACTS_FILE} artifact-dir/
-	echo "##vso[task.setvariable variable=ARTIFACT_DIR]$(pwd)/artifact-dir"
-fi
 
 exit $EXIT_CODE
