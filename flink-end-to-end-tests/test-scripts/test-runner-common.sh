@@ -98,7 +98,7 @@ function post_test_validation {
     if [[ ${ARTIFACTS_DIR} != "" && ${failed} == 1 ]]; then
         mkdir ${ARTIFACTS_DIR}/e2e-flink-logs 
         cp $FLINK_DIR/log/* ${ARTIFACTS_DIR}/e2e-flink-logs/
-        echo "Published e2e logs into debug logs artifact"
+        echo "Published e2e logs into debug logs artifact:"
         ls ${ARTIFACTS_DIR}/e2e-flink-logs/
     fi
 
