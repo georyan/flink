@@ -35,6 +35,8 @@ fi
 
 export END_TO_END_DIR
 
+source "${END_TO_END_DIR}/test-scripts/test-runner-common.sh"
+
 if [ -z "$FLINK_DIR" ] ; then
     echo "You have to export the Flink distribution directory as FLINK_DIR"
     exit 1
@@ -54,11 +56,9 @@ if [ ! -z "$TF_BUILD" ] ; then
 		cp ${ARTIFACTS_FILE} artifact-dir/
 		echo "##vso[task.setvariable variable=ARTIFACT_DIR]$(pwd)/artifact-dir"
 	}
-	trap compress_logs EXIT
+	on_exit compress_logs
 fi
 
-
-source "${END_TO_END_DIR}/test-scripts/test-runner-common.sh"
 
 FLINK_DIR="`( cd \"$FLINK_DIR\" && pwd -P)`" # absolutized and normalized
 
