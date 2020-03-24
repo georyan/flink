@@ -42,11 +42,10 @@ if [ ! -z "$TF_BUILD" ] ; then
 	# compress and register logs for publication on exit
 	function compress_logs {
 		echo "COMPRESSING build artifacts."
-		ARTIFACTS_FILE=${BUILD_BUILDNUMBER}.tgz
-		tar -zcvf ${ARTIFACTS_FILE} $ARTIFACTS_DIR
-		mkdir artifact-dir
-		cp ${ARTIFACTS_FILE} artifact-dir/
-		echo "##vso[task.setvariable variable=ARTIFACT_DIR]$(pwd)/artifact-dir"
+		COMPRESSED_ARCHIVE=${BUILD_BUILDNUMBER}.tgz
+		mkdir compressed-archive-dir
+		tar -zcvf ${COMPRESSED_ARCHIVE} --directory compressed-archive-dir/ $ARTIFACTS_DIR
+		echo "##vso[task.setvariable variable=ARTIFACT_DIR]$(pwd)/compressed-archive-dir"
 	}
 	on_exit compress_logs
 fi
