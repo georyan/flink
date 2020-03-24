@@ -131,4 +131,4 @@ function cleanup {
 }
 
 trap cleanup SIGINT
-trap cleanup_proc EXIT
+on_exit cleanup_proc
