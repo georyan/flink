@@ -84,6 +84,7 @@ jobs:
       - script: |
           set -x
           python --version
+          sudo apt install -y cython3
           cython --version
           gcc --version
           uname -a
