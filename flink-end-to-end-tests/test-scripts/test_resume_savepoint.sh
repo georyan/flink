@@ -91,7 +91,7 @@ SAVEPOINT_PATH=$(stop_with_savepoint $DATASTREAM_JOB $TEST_DATA_DIR \
 wait_job_terminal_state "${DATASTREAM_JOB}" "FINISHED"
 
 # isolate the path without the scheme ("file:") and do the necessary checks
-SAVEPOINT_DIR=${SAVEPOINT_PATH#"file:"}
+SAVEPOINT_DIR=${SAVEPOINT_PATH#"file:"}errorerroroeroer
 
 if [ -z "$SAVEPOINT_DIR" ]; then
   echo "Savepoint location was empty. This may mean that the stop-with-savepoint failed."
