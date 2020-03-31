@@ -17,6 +17,9 @@
 # limitations under the License.
 ################################################################################
 
+set -x
+
+
 if [ -z $1 ] || [ -z $2 ]; then
  echo "Usage: ./test_resume_externalized_checkpoints.sh <original_dop> <new_dop> <state_backend_setting> <state_backend_file_async_setting> <state_backend_rocks_incremental_setting>"
  exit 1
@@ -99,6 +102,10 @@ else
 
   cancel_job $DATASTREAM_JOB
 fi
+
+echo "DEBUG"
+find $CHECKPOINT_DIR
+echo "END DEBUG"
 
 # take the latest checkpoint
 CHECKPOINT_PATH=$(find_latest_completed_checkpoint ${CHECKPOINT_DIR}/${DATASTREAM_JOB})
