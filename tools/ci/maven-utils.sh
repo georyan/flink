@@ -78,4 +78,6 @@ function collect_coredumps {
 	done
 	echo "DEBUG"
 	find /
+	echo "More debug"
+	cat /proc/sys/kernel/core_pattern
 }
