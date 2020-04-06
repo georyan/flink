@@ -46,8 +46,10 @@ jobs:
   # Offical documentation of the Cache task: https://docs.microsoft.com/en-us/azure/devops/pipelines/caching/?view=azure-devops
     - script: |
         set -x
+        sudo apt-get install psmisc
         sleep 10 &
         killall -SIGSEGV sleep
+        ls -lisah
 
         echo "Yolo"
         ulimit -a
@@ -58,6 +60,7 @@ jobs:
 
         sleep 10 &
         killall -SIGSEGV sleep
+        ls -lisah
 
 #   - task: Cache@2
 #     inputs:
