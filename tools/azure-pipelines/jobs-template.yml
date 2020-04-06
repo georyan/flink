@@ -57,7 +57,8 @@ jobs:
         ulimit -a
         sysctl kernel.core_pattern
         cat /proc/sys/kernel/core_pattern
-
+        
+        sudo sysctl -w kernel.core_pattern=core.%u.%p.%t
         sleep 10 &
         killall -SIGSEGV sleep
         ls -lisah
