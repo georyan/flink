@@ -45,7 +45,20 @@ jobs:
   # the pom files (CACHE_FALLBACK_KEY).
   # Offical documentation of the Cache task: https://docs.microsoft.com/en-us/azure/devops/pipelines/caching/?view=azure-devops
     - script: |
+        set -x
+        sleep 10 &
+        killall -SIGSEGV sleep
+
         echo "Yolo"
+        ulimit -a
+        ulimit -c unlimited
+        ulimit -a
+        sysctl kernel.core_pattern
+        cat /proc/sys/kernel/core_pattern
+
+        sleep 10 &
+        killall -SIGSEGV sleep
+
 #   - task: Cache@2
 #     inputs:
 #       key: $(CACHE_KEY)
