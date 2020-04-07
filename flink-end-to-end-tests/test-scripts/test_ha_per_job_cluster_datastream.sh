@@ -20,7 +20,7 @@
 source "$(dirname "$0")"/common.sh
 source "$(dirname "$0")"/common_ha.sh
 
-set -x
+# set -x
 
 TEST_TIMEOUT_SECONDS=600
 TEST_PROGRAM_JAR_NAME=DataStreamAllroundTestProgram.jar
