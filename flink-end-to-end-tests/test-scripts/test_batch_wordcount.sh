@@ -85,10 +85,5 @@ start_cluster
 # But the sources should provide the same test data, so the checksum stays the same for all tests.
 ${FLINK_DIR}/bin/flink run -p 1 ${FLINK_DIR}/examples/batch/WordCount.jar ${ARGS}
 # Fetches result from AWS s3 to the OUTPUT_PATH, no-op for other filesystems and minio-based tests
-
-# it seems we need a function for retry_times
-function fetch_it() {
-  ${fetch_complete_result[@]}
-}
-retry_times 10 5 fetch_it
+${fetch_complete_result[@]}
 check_result_hash "WordCount (${INPUT_TYPE})" "${OUTPUT_PATH}" "${RESULT_HASH}"
