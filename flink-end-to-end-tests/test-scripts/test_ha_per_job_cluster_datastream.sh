@@ -157,8 +157,9 @@ STATE_BACKEND_ROCKS_INCREMENTAL=${3:-false}
     (sleep $TEST_TIMEOUT_SECONDS; # set a timeout of 10 minutes for this test
     echo "Test did not finish after $TEST_TIMEOUT_SECONDS. Printing Flink logs and killing it"
     cat ${FLINK_DIR}/log/* 
-    kill "$cmdpid") & 
+    kill "$cmdpid") & watchdog_pid=$!
     run_ha_test 4 ${STATE_BACKEND_TYPE} ${STATE_BACKEND_FILE_ASYNC} ${STATE_BACKEND_ROCKS_INCREMENTAL}
+    kill $watchdog_pid
 )
 
 
