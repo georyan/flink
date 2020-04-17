@@ -35,6 +35,13 @@ jobs:
     # See also https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml#workspace 
 
   steps:
+  # if on Azure, free up disk space
+  - script: ./tools/azure-pipelines/free_disk_space.sh
+    target: host
+    condition: startsWith(variables.Agent.Name, 'Azure')
+    displayName: Free up disk space
+
+
   # The cache task is persisting the .m2 directory between builds, so that
   # we do not have to re-download all dependencies from maven central for 
   # each build. The hope is that downloading the cache is faster than
@@ -101,7 +108,7 @@ jobs:
   # if on Azure, free up disk space
   - script: ./tools/azure-pipelines/free_disk_space.sh
     target: host
-    condition: startsWith('$(Agent.Name)', 'Azure')
+    condition: startsWith(variables.Agent.Name, 'Azure')
     displayName: Free up disk space
 
   # download artifacts
