@@ -52,6 +52,17 @@ print_system_info() {
 
 print_system_info
 
+disk_printer() {
+    while true
+    do
+        echo "######### Disk information"
+        df -hH
+        sleep 60
+    done
+}
+echo "starting disk printer"
+disk_printer &
+
 
 STAGE=$1
 echo "Current stage: \"$STAGE\""
