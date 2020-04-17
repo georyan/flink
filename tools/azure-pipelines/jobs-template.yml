@@ -38,6 +38,6 @@ jobs:
   # if on Azure, free up disk space
   - script: ./tools/azure-pipelines/free_disk_space.sh
     target: host
-    condition: startsWith(variables.Agent.Name, 'Azure')
+   # condition: startsWith(variables.Agent.Name, 'Azure')
     displayName: Free up disk space
 
