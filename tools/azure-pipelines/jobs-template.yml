@@ -98,6 +98,11 @@ jobs:
       misc:
         module: misc
   steps:
+  # if on Azure, free up disk space
+  - script: ./tools/azure-pipelines/free_disk_space.sh
+    target: host
+    condition: startsWith('$(Agent.Name)', 'Azure')
+    displayName: Free up disk space
 
   # download artifacts
   - task: DownloadPipelineArtifact@2
