@@ -24,8 +24,11 @@ REPO=$1
 BRANCH=$2
 
 pwd
+ls -lisah
 
-source maven_utils.sh
+CI_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+echo $CI_DIR
+source $CI_DIR/maven_utils.sh
 
 git clone $REPO
 cd flink-shaded
