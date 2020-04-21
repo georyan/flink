@@ -48,7 +48,7 @@ under the License.
 
 		<dependency>
 			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-shaded-hadoop-2</artifactId>
+			<artifactId>flink-shaded-hadoop-${hadoop.major.version}</artifactId>
 			<optional>true</optional>
 		</dependency>
 

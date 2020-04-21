@@ -95,7 +95,7 @@ under the License.
 					<!-- prevent flink-shaded-hadoop from being on the test classpath
 					 	to avoid conflicts with other dependencies -->
 					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-shaded-hadoop-2</artifactId>
+					<artifactId>flink-shaded-hadoop-${hadoop.major.version}</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -111,7 +111,7 @@ under the License.
 					<!-- prevent flink-shaded-hadoop from being on the test classpath
 					 	to avoid conflicts with other dependencies -->
 					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-shaded-hadoop-2</artifactId>
+					<artifactId>flink-shaded-hadoop-${hadoop.major.version}</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -401,7 +401,7 @@ under the License.
 					<artifactItems>
 						<artifactItem>
 							<groupId>org.apache.flink</groupId>
-							<artifactId>flink-shaded-hadoop-2-uber</artifactId>
+							<artifactId>flink-shaded-hadoop-${hadoop.major.version}-uber</artifactId>
 							<version>${hadoop.version}-${flink.shaded.version}</version>
 							<type>jar</type>
 							<overWrite>true</overWrite>
