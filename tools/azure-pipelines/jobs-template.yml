@@ -64,6 +64,12 @@ jobs:
     displayName: "Set to jdk11"
     condition: eq('${{parameters.jdk}}', 'jdk11')
   # Compile
+  - script: |
+      git clone https://github.com/rmetzger/flink-shaded.git
+      cd flink-shaded
+      git checkout FLINK-11086-hadoop3
+      mvn clean install
+  displayName: "Prepare flink-shaded"
   - script: STAGE=compile ${{parameters.environment}} ./tools/azure_controller.sh compile
     displayName: Build
 
