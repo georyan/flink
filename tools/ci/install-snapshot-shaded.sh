@@ -28,7 +28,7 @@ ls -lisah
 
 CI_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 echo $CI_DIR
-source $CI_DIR/maven_utils.sh
+source $CI_DIR/maven-utils.sh
 
 git clone $REPO
 cd flink-shaded
