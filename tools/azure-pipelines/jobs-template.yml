@@ -69,7 +69,7 @@ jobs:
       cd flink-shaded
       git checkout FLINK-11086-hadoop3
       mvn clean install
-  displayName: "Prepare flink-shaded"
+    displayName: "Prepare flink-shaded"
   - script: STAGE=compile ${{parameters.environment}} ./tools/azure_controller.sh compile
     displayName: Build
 
