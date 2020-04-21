@@ -23,13 +23,15 @@
 REPO=$1
 BRANCH=$2
 
-source ./tools/ci/maven_utils.sh
+pwd
+
+source maven_utils.sh
 
 git clone $REPO
 cd flink-shaded
 git checkout $BRANCH
-run_mvn install -Dhadoop.version=2.4.1
-run_mvn install -Dhadoop.version=2.6.5
-run_mvn install -Dhadoop.version=2.7.5
-run_mvn install -Dhadoop.version=2.8.3
-run_mvn install -Dhadoop.version=3.1.3
+run_mvn install -Dhadoop.two.version=2.4.1 -Dhadoop.three.version=3.1.3
+run_mvn install -Dhadoop.two.version=2.6.5 -Dhadoop.three.version=3.0.3
+run_mvn install -Dhadoop.two.version=2.7.5
+run_mvn install -Dhadoop.two.version=2.8.3
+run_mvn install -Dhadoop.two.version=3.1.3
