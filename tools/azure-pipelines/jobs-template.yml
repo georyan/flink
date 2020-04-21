@@ -64,11 +64,7 @@ jobs:
     displayName: "Set to jdk11"
     condition: eq('${{parameters.jdk}}', 'jdk11')
   # Compile
-  - script: |
-      git clone https://github.com/rmetzger/flink-shaded.git
-      cd flink-shaded
-      git checkout FLINK-11086-hadoop3
-      mvn clean install
+  - script: ./tools/ci/install-snapshot-shaded.sh https://github.com/rmetzger/flink-shaded.git FLINK-11086-hadoop3
     displayName: "Prepare flink-shaded"
   - script: STAGE=compile ${{parameters.environment}} ./tools/azure_controller.sh compile
     displayName: Build
@@ -139,6 +135,8 @@ jobs:
   - script: sudo sysctl -w kernel.core_pattern=core.%p
     displayName: Set coredump pattern
   # Test
+  - script: ./tools/ci/install-snapshot-shaded.sh https://github.com/rmetzger/flink-shaded.git FLINK-11086-hadoop3
+    displayName: "Prepare flink-shaded"
   - script: STAGE=test ${{parameters.environment}} ./tools/azure_controller.sh $(module)
     displayName: Test - $(module)
     env:
@@ -187,6 +185,8 @@ jobs:
       displayName: Setup Docker
     - script: ./tools/azure-pipelines/free_disk_space.sh
       displayName: Free up disk space
+    - script: ./tools/ci/install-snapshot-shaded.sh https://github.com/rmetzger/flink-shaded.git FLINK-11086-hadoop3
+      displayName: "Prepare flink-shaded"
     - script: sudo apt-get install -y bc
     - script: ${{parameters.environment}} STAGE=compile ./tools/azure_controller.sh compile
       displayName: Build Flink
