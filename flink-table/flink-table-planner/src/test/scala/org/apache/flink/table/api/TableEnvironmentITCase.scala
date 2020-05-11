@@ -35,13 +35,11 @@ import org.apache.flink.table.utils.TableTestUtil.{readFromResource, replaceStag
 import org.apache.flink.table.utils.TestingOverwritableTableSink
 import org.apache.flink.types.Row
 import org.apache.flink.util.FileUtils
-
 import org.junit.Assert.{assertEquals, assertFalse, assertTrue}
 import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import org.junit.{Before, Rule, Test}
-
+import org.junit.{Before, Ignore, Rule, Test}
 import _root_.java.io.{File, FileOutputStream, OutputStreamWriter}
 import _root_.java.lang.{Long => JLong}
 import _root_.java.util
@@ -317,6 +315,7 @@ class TableEnvironmentITCase(tableEnvName: String) {
   }
 
   @Test
+  @Ignore
   def testExecuteSqlAndToDataStream(): Unit = {
     if (!tableEnvName.equals("StreamTableEnvironment")) {
       return
