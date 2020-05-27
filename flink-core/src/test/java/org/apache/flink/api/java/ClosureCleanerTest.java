@@ -134,7 +134,8 @@ public class ClosureCleanerTest {
 	}
 
 	@Test
-	public void testSelfReferencingClean() {
+	public void testSelfReferencingClean() throws InterruptedException {
+		Thread.sleep(500000000L);
 		final NestedSelfReferencing selfReferencing = new NestedSelfReferencing();
 		ClosureCleaner.clean(selfReferencing, ExecutionConfig.ClosureCleanerLevel.RECURSIVE, true);
 	}
