@@ -87,6 +87,12 @@ public class ZooKeeperLeaderElectionITCase extends TestLogger {
 	 * successfully executed.
 	 */
 	@Test
+	public void testMultiple() throws Exception {
+		for (int i = 0; i < 500; i++) {
+			log.warn("RUNNING TEST i = {}", i);
+			testJobExecutionOnClusterWithLeaderChange();
+		}
+	}
 	public void testJobExecutionOnClusterWithLeaderChange() throws Exception {
 		final int numDispatchers = 3;
 		final int numTMs = 2;
@@ -121,6 +127,7 @@ public class ZooKeeperLeaderElectionITCase extends TestLogger {
 
 			for (int i = 0; i < numDispatchers - 1; i++) {
 				final DispatcherGateway leaderDispatcherGateway = getNextLeadingDispatcherGateway(miniCluster, previousLeaderAddress, timeout);
+				log.info("got next leading dispatcher: {}", leaderDispatcherGateway);
 				previousLeaderAddress = leaderDispatcherGateway.getAddress();
 
 				CommonTestUtils.waitUntilCondition(() -> leaderDispatcherGateway.requestJobStatus(jobGraph.getJobID(), RPC_TIMEOUT).get() == JobStatus.RUNNING, timeout, 50L);
@@ -128,12 +135,15 @@ public class ZooKeeperLeaderElectionITCase extends TestLogger {
 				log.info("Job is running. Shutting down cluster.");
 
 				leaderDispatcherGateway.shutDownCluster();
+				log.info("Shutdown complete");
 			}
 
 			final DispatcherGateway leaderDispatcherGateway = getNextLeadingDispatcherGateway(miniCluster, previousLeaderAddress, timeout);
 			CommonTestUtils.waitUntilCondition(() -> leaderDispatcherGateway.requestJobStatus(jobGraph.getJobID(), RPC_TIMEOUT).get() == JobStatus.RUNNING, timeout, 50L);
+			log.info("Requesting job result");
 			CompletableFuture<JobResult> jobResultFuture = leaderDispatcherGateway.requestJobResult(jobGraph.getJobID(), RPC_TIMEOUT);
 			BlockingOperator.unblock();
+			log.info("Unblocked operator");
 
 			assertThat(jobResultFuture.get().isSuccess(), is(true));
 		}
