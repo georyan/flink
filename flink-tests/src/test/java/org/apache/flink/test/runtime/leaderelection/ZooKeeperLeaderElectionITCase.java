@@ -93,6 +93,7 @@ public class ZooKeeperLeaderElectionITCase extends TestLogger {
 			testJobExecutionOnClusterWithLeaderChange();
 		}
 	}
+
 	public void testJobExecutionOnClusterWithLeaderChange() throws Exception {
 		final int numDispatchers = 3;
 		final int numTMs = 2;
@@ -122,6 +123,7 @@ public class ZooKeeperLeaderElectionITCase extends TestLogger {
 
 			log.info("Submitting test job");
 			miniCluster.submitJob(jobGraph).get();
+			log.info("Job submission completed.");
 
 			String previousLeaderAddress = null;
 
