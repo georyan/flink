@@ -213,7 +213,7 @@ public class ZooKeeperJobGraphStore implements JobGraphStore {
 		checkNotNull(jobGraph, "Job graph");
 		String path = getPathForJob(jobGraph.getJobID());
 
-		LOG.debug("Adding job graph {} to {}{}.", jobGraph.getJobID(), zooKeeperFullBasePath, path);
+		LOG.info("Adding job graph {} to {}{}.", jobGraph.getJobID(), zooKeeperFullBasePath, path);
 
 		boolean success = false;
 
@@ -259,7 +259,7 @@ public class ZooKeeperJobGraphStore implements JobGraphStore {
 		checkNotNull(jobId, "Job ID");
 		String path = getPathForJob(jobId);
 
-		LOG.debug("Removing job graph {} from {}{}.", jobId, zooKeeperFullBasePath, path);
+		LOG.info("Removing job graph {} from {}{}.", jobId, zooKeeperFullBasePath, path);
 
 		synchronized (cacheLock) {
 			if (addedJobGraphs.contains(jobId)) {
@@ -279,7 +279,7 @@ public class ZooKeeperJobGraphStore implements JobGraphStore {
 		checkNotNull(jobId, "Job ID");
 		final String path = getPathForJob(jobId);
 
-		LOG.debug("Releasing locks of job graph {} from {}{}.", jobId, zooKeeperFullBasePath, path);
+		LOG.info("Releasing locks of job graph {} from {}{}.", jobId, zooKeeperFullBasePath, path);
 
 		synchronized (cacheLock) {
 			if (addedJobGraphs.contains(jobId)) {
@@ -296,7 +296,7 @@ public class ZooKeeperJobGraphStore implements JobGraphStore {
 	public Collection<JobID> getJobIds() throws Exception {
 		Collection<String> paths;
 
-		LOG.debug("Retrieving all stored job ids from ZooKeeper under {}.", zooKeeperFullBasePath);
+		LOG.info("Retrieving all stored job ids from ZooKeeper under {}.", zooKeeperFullBasePath);
 
 		try {
 			paths = jobGraphsInZooKeeper.getAllPaths();

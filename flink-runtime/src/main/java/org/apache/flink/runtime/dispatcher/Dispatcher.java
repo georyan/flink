@@ -628,6 +628,7 @@ public abstract class Dispatcher extends PermanentlyFencedRpcEndpoint<Dispatcher
 
 	private void registerDispatcherJobTerminationFuture(JobID jobId, CompletableFuture<Void> dispatcherJobTerminationFuture) {
 		Preconditions.checkState(!dispatcherJobTerminationFutures.containsKey(jobId));
+		log.info("register termination future for job {}", jobId);
 		dispatcherJobTerminationFutures.put(jobId, dispatcherJobTerminationFuture);
 
 		// clean up the pending termination future
@@ -821,10 +822,13 @@ public abstract class Dispatcher extends PermanentlyFencedRpcEndpoint<Dispatcher
 						throwable));
 			});
 
+		log.info("waitForTerminatingJob(): jobManagerTerminationFuture = {} (#termination futures={})", jobManagerTerminationFuture, dispatcherJobTerminationFutures.size());
 		return jobManagerTerminationFuture.thenAcceptAsync(
 			FunctionUtils.uncheckedConsumer((ignored) -> {
+				log.info("waitForTerminatingJob(): .thenAcceptAsync");
 				dispatcherJobTerminationFutures.remove(jobId);
 				action.accept(jobGraph);
+				log.info("waitForTerminatingJob(): done");
 			}),
 			getMainThreadExecutor());
 	}
