@@ -114,6 +114,7 @@ public class ZooKeeperLeaderElectionITCase extends TestLogger {
 			final int parallelism = numTMs * numSlotsPerTM;
 			JobGraph jobGraph = createJobGraph(parallelism);
 
+			log.info("Submitting test job");
 			miniCluster.submitJob(jobGraph).get();
 
 			String previousLeaderAddress = null;
@@ -123,6 +124,8 @@ public class ZooKeeperLeaderElectionITCase extends TestLogger {
 				previousLeaderAddress = leaderDispatcherGateway.getAddress();
 
 				CommonTestUtils.waitUntilCondition(() -> leaderDispatcherGateway.requestJobStatus(jobGraph.getJobID(), RPC_TIMEOUT).get() == JobStatus.RUNNING, timeout, 50L);
+
+				log.info("Job is running. Shutting down cluster.");
 
 				leaderDispatcherGateway.shutDownCluster();
 			}
