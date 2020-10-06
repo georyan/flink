@@ -86,14 +86,15 @@ public class ZooKeeperLeaderElectionITCase extends TestLogger {
 	 * blocking job. Once only one JobManager is left, it is checked that a non-blocking can be
 	 * successfully executed.
 	 */
-	@Test
+	/*@Test
 	public void testMultiple() throws Exception {
 		for (int i = 0; i < 500; i++) {
 			log.warn("RUNNING TEST i = {}", i);
 			testJobExecutionOnClusterWithLeaderChange();
 		}
-	}
+	}*/
 
+	@Test
 	public void testJobExecutionOnClusterWithLeaderChange() throws Exception {
 		final int numDispatchers = 3;
 		final int numTMs = 2;
