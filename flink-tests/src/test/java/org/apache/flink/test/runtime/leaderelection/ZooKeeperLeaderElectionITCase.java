@@ -149,6 +149,10 @@ public class ZooKeeperLeaderElectionITCase extends TestLogger {
 			log.info("Unblocked operator");
 
 			assertThat(jobResultFuture.get().isSuccess(), is(true));
+			log.info("Test done");
+		} catch(Throwable t) {
+			log.warn("TEST FAILED WITH THROWABLE", t);
+			throw t;
 		}
 	}
 
